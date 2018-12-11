@@ -1,4 +1,6 @@
 using System;
+using System.IO;
+using System.Text;
 using System.Xml;
 using Xunit;
 
@@ -10,7 +12,7 @@ namespace ValidationTests
         public void VerfyVerseNumbers()
         {
             XmlDocument xd = new XmlDocument();
-            xd.Load("../../../../KJV.xml");
+            xd.Load("../../../../KJVA.xml");
 
             var bible = xd.ChildNodes[1].ChildNodes[1].ChildNodes[1];
 
@@ -27,15 +29,18 @@ namespace ValidationTests
                         {
                             var verse = chapter.ChildNodes[i4];
                             var verseInnerText = verse.InnerText.Trim();
-                            if (!verseInnerText.StartsWith(string.Concat(i3+1, ":", i4+1)))
+                            if (!verseInnerText.StartsWith(string.Concat(i3 + 1, ":", i4 + 1)))
                             {
                                 var bookname = book.ChildNodes[0].InnerText.Trim();
-                                throw new Exception($"{bookname} {i3 + 1}:{i4 + 1}");
+                                var errorVerse =($"{bookname} {i3 + 1}:{i4 + 1}");
+                                throw new Exception(errorVerse);
                             }
                         }
                     }
                 }
             }
         }
+
+
     }
 }
